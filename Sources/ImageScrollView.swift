@@ -39,7 +39,9 @@ open class ImageScrollView: UIScrollView {
     private var pointToCenterAfterResize: CGPoint = CGPoint.zero
     private var scaleToRestoreAfterResize: CGFloat = 1.0
     open var maxScaleFromMinScale: CGFloat = 3.0
-    
+
+    open var isSuperviewInvolved: Bool = false
+
     override open var frame: CGRect {
         willSet {
             if frame.equalTo(newValue) == false && newValue.equalTo(CGRect.zero) == false && imageSize.equalTo(CGSize.zero) == false {
@@ -291,6 +293,19 @@ open class ImageScrollView: UIScrollView {
             self.configureImageForSize(self.imageSize)
             self.imageScrollViewDelegate?.imageScrollViewDidChangeOrientation(imageScrollView: self)
         }
+    }
+
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+      if let rv = super.hitTest(point, with: event) {
+        return rv
+      }
+      if isSuperviewInvolved, let sview = superview {
+        let spoint = convert(point, to: sview)
+        if sview.point(inside: spoint, with: event) {
+          return self
+        }
+      }
+      return nil
     }
 }
 
