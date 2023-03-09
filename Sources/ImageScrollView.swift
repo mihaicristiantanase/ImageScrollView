@@ -296,16 +296,16 @@ open class ImageScrollView: UIScrollView {
     }
 
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-      if let rv = super.hitTest(point, with: event) {
-        return rv
-      }
-      if isSuperviewInvolved, let sview = superview {
-        let spoint = convert(point, to: sview)
-        if sview.point(inside: spoint, with: event) {
-          return self
+        if let rv = super.hitTest(point, with: event) {
+            return rv
         }
-      }
-      return nil
+        if isSuperviewInvolved, let sview = superview {
+            let spoint = convert(point, to: sview)
+            if sview.point(inside: spoint, with: event) {
+                return self
+            }
+        }
+        return nil
     }
 }
 
